@@ -1,0 +1,8 @@
+version: '3'
+services:
+  bugle_bot:
+    build: .
+    volumes:
+      - .:/bugle_bot
+    environment:
+      DISCORD_TOKEN: DBG_TOKEN
