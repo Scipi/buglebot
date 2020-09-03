@@ -1,8 +1,17 @@
 version: '3'
 services:
-  bugle_bot:
+  buglebot:
     build: .
     volumes:
-      - .:/bugle_bot
+      - .:/buglebot
     environment:
-      DISCORD_TOKEN: DBG_TOKEN
+      - DISCORD_TOKEN=DBG_TOKEN
+      - MONGO_URI=mongodb://db:27017
+  db:
+    image: 'mongo'
+    environment:
+      - MONGO_INITDB_DATABASE=buglebot_db
+    volumes:
+      - ./mongo-volume:/data/db
+    ports:
+      - '27017-27019:27017-27019'

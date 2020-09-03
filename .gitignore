@@ -1,4 +1,5 @@
 .idea/
 venv/
+mongo-volume/
 
 docker-compose.override.yml
