@@ -1,3 +1,5 @@
+from dateutil import parser
+from dateutil import tz
 import logging
 import discord
 import buglebot
@@ -31,13 +33,26 @@ async def orders(ctx, time, orders_message):
         await ctx.send('Could not find orders channel. Did it get deleted?')
         return
 
+    try:
+        time = time.replace('_', ' ')
+        orders_time = parser.parse(time)
+        # orders_time = orders_time.astimezone(tz.UTC)
+        logging.debug(f'{orders_time}')
+    except ValueError:
+        await ctx.send(
+            'Could not parse orders time. Make sure it is in the format "%Y-%m-%d\_%H:%M:%S%z".\n'
+            'Ie. 2020-09-01\_18:00:00-0500 => Sept. 1st 2020 at 6PM EST.\n'
+            'PLEASE NOTE the %z refers to your timezone offset. So EST is -0500, UTC is +0000, and CET is +0100'
+        )
+        return
+
     if guildinfo['orders_header_message']:
         orders_message = ' '.join((guildinfo['orders_header_message'], orders_message))
 
     message_info = await channel.send(orders_message)
 
     orders_record = {
-        'time': time,
+        'time': orders_time,
         'message_id': message_info.id,
         'guild_id': message_info.guild.id,
         'channel_id': message_info.channel.id
