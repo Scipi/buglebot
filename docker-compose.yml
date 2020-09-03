@@ -1,9 +1,9 @@
 version: '3'
 services:
-  bugle_bot:
+  buglebot:
     build: .
     volumes:
-      - .:/bugle_bot
+      - .:/buglebot
     environment:
       - DISCORD_TOKEN=DBG_TOKEN
       - MONGO_URI=mongodb://db:27017
